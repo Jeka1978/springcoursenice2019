@@ -14,5 +14,9 @@ public class Elf {
     @InjectRandomInt(min=20,max=50)
     private int speed;
 
+    public int getDoubleSpeed(){
+        return speed * 2;
+    }
+
 
 }
