@@ -7,6 +7,7 @@ public class NiceServiceImpl implements NiceService {
     @Override
     public void doWork() {
         System.out.println("Working");
+        drinkBeer();
     }
 
     @Override

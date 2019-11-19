@@ -9,6 +9,8 @@ import java.util.Random;
  * @author Evgeny Borisov
  */
 public class InjectRandomIntAnnotationObjectConfigurator implements ObjectConfigurator {
+    private Random random = new Random();
+
     @Override
     @SneakyThrows
     public void configure(Object t) {
@@ -19,8 +21,8 @@ public class InjectRandomIntAnnotationObjectConfigurator implements ObjectConfig
             if (annotation != null) {
                 int min = annotation.min();
                 int max = annotation.max();
-                Random random = new Random();
-                int value = random.nextInt(max - min)+min+1;
+
+                int value = random.nextInt(max - min) + min + 1;
                 field.setAccessible(true);
                 field.set(t, value);
             }

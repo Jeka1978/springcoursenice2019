@@ -9,6 +9,5 @@ public class Main {
 //        iRobot.cleanRoom();
         NiceService niceService = ObjectFactory.getInstance().createObject(NiceService.class);
         niceService.doWork();
-        niceService.drinkBeer();
     }
 }
