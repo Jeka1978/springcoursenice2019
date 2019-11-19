@@ -2,9 +2,13 @@ package my_spring;
 
 import com.github.javafaker.Faker;
 import lombok.SneakyThrows;
+import org.reflections.Reflections;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 /**
  * @author Evgeny Borisov
@@ -12,12 +16,19 @@ import java.util.Random;
 public class ObjectFactory {
     private static ObjectFactory ourInstance = new ObjectFactory();
     private Config config = new JavaConfig();
+    private List<ObjectConfigurator> objectConfigurators = new ArrayList<>();
+    private Reflections scanner = new Reflections("my_spring");
 
     public static ObjectFactory getInstance() {
         return ourInstance;
     }
 
+    @SneakyThrows
     private ObjectFactory() {
+        Set<Class<? extends ObjectConfigurator>> classes = scanner.getSubTypesOf(ObjectConfigurator.class);
+        for (Class<? extends ObjectConfigurator> aClass : classes) {
+            objectConfigurators.add(aClass.newInstance());
+        }
     }
 
 
@@ -28,27 +39,8 @@ public class ObjectFactory {
         }
         T t = type.newInstance();
 
-        Faker faker = new Faker();
-        Field[] fields = type.getDeclaredFields();
-        for (Field field : fields) {
-            if (field.isAnnotationPresent(InjectQuote.class)) {
-                String fact = faker.chuckNorris().fact();
-                field.setAccessible(true);
-                field.set(t,fact);
-            }
-        }
+        objectConfigurators.forEach(configurator -> configurator.configure(t));
 
-        for (Field field : fields) {
-            InjectRandomInt annotation = field.getAnnotation(InjectRandomInt.class);
-            if (annotation != null) {
-                int min = annotation.min();
-                int max = annotation.max();
-                Random random = new Random();
-                int value = random.nextInt(max - min)+min+1;
-                field.setAccessible(true);
-                field.set(t, value);
-            }
-        }
 
 
         return t;
