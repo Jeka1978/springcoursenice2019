@@ -15,6 +15,7 @@ public class ObjectFactory {
     private static ObjectFactory ourInstance = new ObjectFactory();
     private Config config = new JavaConfig();
     private List<ObjectConfigurator> objectConfigurators = new ArrayList<>();
+    private List<ProxyConfigurator> proxyConfigurators = new ArrayList<>();
     private Reflections scanner = new Reflections("my_spring");
 
     public static ObjectFactory getInstance() {
@@ -26,6 +27,10 @@ public class ObjectFactory {
         Set<Class<? extends ObjectConfigurator>> classes = scanner.getSubTypesOf(ObjectConfigurator.class);
         for (Class<? extends ObjectConfigurator> aClass : classes) {
             objectConfigurators.add(aClass.newInstance());
+        }
+        Set<Class<? extends ProxyConfigurator>> set = scanner.getSubTypesOf(ProxyConfigurator.class);
+        for (Class<? extends ProxyConfigurator> aClass : set) {
+            proxyConfigurators.add(aClass.newInstance());
         }
     }
 
@@ -39,20 +44,11 @@ public class ObjectFactory {
         configure(t);
 
         invokeInitMethod(type, t);
-        if (type.isAnnotationPresent(Benchmark.class)|| Arrays.stream(type.getMethods()).anyMatch(method -> method.isAnnotationPresent(Benchmark.class))) {
-            return (T) Proxy.newProxyInstance(type.getClassLoader(), type.getInterfaces(), new InvocationHandler() {
-                @Override
-                public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-                    System.out.println("******BENCHMARK STARTED FOR METHOD "+method.getName()+" **********");
-                    long start = System.nanoTime();
-                    Object retVal = method.invoke(t, args);
-                    long end = System.nanoTime();
-                    System.out.println(end-start);
-                    System.out.println("******BENCHMARK ENDED FOR METHOD "+method.getName()+" **********");
-                    return retVal;
-                }
-            });
+
+        for (ProxyConfigurator proxyConfigurator : proxyConfigurators) {
+            t = (T) proxyConfigurator.wrapWithProxyIfNeeded(t);
         }
+
         return t;
     }
 
@@ -70,10 +66,18 @@ public class ObjectFactory {
     }
 
     private <T> Class<T> resolveImpl(Class<T> type) {
+        Class<T> implClass=null;
         if (type.isInterface()) {
-            type = config.getImplClass(type);
+            implClass = config.getImplClass(type);
+            if (implClass == null) {
+                Set<Class<? extends T>> set = scanner.getSubTypesOf(type);
+                if (set.size() != 1) {
+                    throw new IllegalStateException(type + " has 0 or more than one impl, please update your config");
+                }
+                implClass= (Class<T>) set.iterator().next();
+            }
         }
-        return type;
+        return implClass;
     }
 }
 
