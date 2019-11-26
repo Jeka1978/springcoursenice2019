@@ -1,7 +1,7 @@
 package screen_saver;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Lookup;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -13,6 +13,7 @@ import java.util.Random;
  * @author Evgeny Borisov
  */
 @Component
+//@Scope("twoSeconds")
 public class ColorFrame extends JFrame {
     @Autowired
     private Color color;
@@ -27,14 +28,24 @@ public class ColorFrame extends JFrame {
     public void moveToRandomLocation(){
         Random random = new Random();
         setLocation(random.nextInt(1500), random.nextInt(1100));
-        getContentPane().setBackground(kuku());
+        getContentPane().setBackground(color);
         repaint();
     }
 
-    @Lookup
-    protected  Color kuku(){
-        System.out.println(123);
-        return null;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
