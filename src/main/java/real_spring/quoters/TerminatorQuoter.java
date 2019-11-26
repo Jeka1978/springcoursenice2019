@@ -1,6 +1,8 @@
 package real_spring.quoters;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 import org.springframework.core.annotation.Order;
 import org.springframework.scheduling.annotation.Async;
@@ -17,6 +19,9 @@ import static java.util.Arrays.asList;
  */
 @Nice
 @Order(1)
+@Film
+@Book
+@Lazy
 public class TerminatorQuoter implements Quoter {
 
     private List<String> messages;
@@ -27,7 +32,7 @@ public class TerminatorQuoter implements Quoter {
     }
 
     @Value("${terminator}")
-    public void setMessages(String[] message) {
+    public void xMessages(String[] message) {
         this.messages = asList(message);
     }
 

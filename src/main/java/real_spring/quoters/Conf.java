@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static java.util.Arrays.asList;
+
 /**
  * @author Evgeny Borisov
  */
@@ -17,7 +19,13 @@ import java.util.Map;
 @EnableScheduling
 @ImportResource("classpath:context.xml")
 public class Conf {
-    
+//
+//    @Bean
+//    public List<Quoter> quoters(){
+//        return new ArrayList<>(asList(() -> System.out.println("this is default")));
+//    }
+//
+//
 
 
 

@@ -1,6 +1,7 @@
 package real_spring.quoters;
 
 import my_spring.InjectRandomInt;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -12,6 +13,7 @@ import javax.annotation.PostConstruct;
  */
 @Component
 @Order(2)
+@Book
 public class ShakespeareQuoter implements Quoter {
 
     @InjectRandomInt(min = 3, max = 7)
