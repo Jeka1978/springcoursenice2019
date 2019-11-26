@@ -1,7 +1,7 @@
 package screen_saver;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
+import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -19,10 +19,6 @@ public class ColorFrame extends JFrame {
 
     @PostConstruct
     private void init(){
-        System.out.println(color.getClass());
-        System.out.println(color.getBlue());
-        System.out.println(color.getBlue());
-        System.out.println(color.getBlue());
         setSize(400,400);
         setVisible(true);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -31,24 +27,14 @@ public class ColorFrame extends JFrame {
     public void moveToRandomLocation(){
         Random random = new Random();
         setLocation(random.nextInt(1500), random.nextInt(1100));
-        getContentPane().setBackground(color);
+        getContentPane().setBackground(kuku());
         repaint();
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    @Lookup
+    protected  Color kuku(){
+        System.out.println(123);
+        return null;}
 
 
 

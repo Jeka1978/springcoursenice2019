@@ -16,7 +16,7 @@ public class ScreenSaverConf {
 
 
     @Bean
-    @Scope(value = "prototype", proxyMode = ScopedProxyMode.TARGET_CLASS)
+    @Scope(value = "prototype")
     public Color color(){
         Random random = new Random();
         return new Color(random.nextInt(255), random.nextInt(255), random.nextInt(255));
@@ -38,7 +38,9 @@ public class ScreenSaverConf {
     public static void main(String[] args) {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(ScreenSaverConf.class);
         while (true) {
-            context.getBean(ColorFrame.class).moveToRandomLocation();
+            ColorFrame bean = context.getBean(ColorFrame.class);
+            System.out.println("bean.getClass() = " + bean.getClass());
+            bean.moveToRandomLocation();
             Thread.sleep(80);
         }
     }
