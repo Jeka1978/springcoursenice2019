@@ -3,6 +3,11 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-<!--    <bean class="my_spring.BackupDbService"/>-->
+
+    <bean class="java.awt.Color">
+        <constructor-arg index="0" type="int" value="255"/>
+        <constructor-arg index="1" type="int" value="255"/>
+        <constructor-arg index="2" type="int" value="0"/>
+    </bean>
 
 </beans>
