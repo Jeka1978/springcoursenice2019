@@ -13,8 +13,6 @@ import java.util.List;
 @Component
 public class TalkingRobot {
     @Autowired
-    @Book
-    @Film
     private List<Quoter> quoters;
 
 

@@ -1,5 +1,6 @@
 package never_use_switch_lab;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -17,4 +18,6 @@ public class EmailCallbackMailGenerator implements MailGenerator {
     public int getMyCode() {
         return 2;
     }
+
+
 }

@@ -25,14 +25,6 @@ public class MainConf {
 
 
 
-    @Bean
-    public Map<Integer,MailGenerator> generatorMap(List<MailGenerator> mailGenerators){
-        return mailGenerators.stream().collect(toMap(MailGenerator::getMyCode, identity()));
-    }
-
-
-
-
     public static void main(String[] args) {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(MainConf.class);
         System.out.println();

@@ -3,6 +3,7 @@ package never_use_switch_lab;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,8 +18,12 @@ public class MailSender {
 
 
 
-    @Autowired
-    private Map<Integer, MailGenerator> map;
+
+    private Map<Integer, MailGenerator> map = new HashMap<>();
+
+    public void registerMailGenerator(int code,MailGenerator mailGenerator){
+        map.putIfAbsent(code, mailGenerator);
+    }
 
 
 
