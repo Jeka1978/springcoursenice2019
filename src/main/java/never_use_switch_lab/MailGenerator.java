@@ -5,4 +5,5 @@ package never_use_switch_lab;
  */
 public interface MailGenerator {
     String generateHtml(MailInfo mailInfo);
+    int getMyCode();
 }

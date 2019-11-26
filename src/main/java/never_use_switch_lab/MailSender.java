@@ -3,7 +3,11 @@ package never_use_switch_lab;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
+
+import static java.util.function.Function.identity;
+import static java.util.stream.Collectors.toMap;
 
 /**
  * @author Evgeny Borisov
@@ -11,13 +15,16 @@ import java.util.Map;
 @Service
 public class MailSender {
 
+
+
     @Autowired
-    private Map<String,MailGenerator> map;
+    private Map<Integer, MailGenerator> map;
+
 
 
     public void sendMail(MailInfo mailInfo) {
 
-        String mailCode = String.valueOf(mailInfo.getMailCode());
+        int mailCode = mailInfo.getMailCode();
         MailGenerator mailGenerator = map.get(mailCode);
         if (mailGenerator == null) {
             throw new IllegalStateException(mailCode + " not supported yet");
@@ -28,7 +35,7 @@ public class MailSender {
     }
 
     private void send(String html) {
-        System.out.println(html+" was sent");
+        System.out.println(html + " was sent");
     }
 
 }
