@@ -16,8 +16,8 @@ import static java.util.Arrays.asList;
 @Configuration
 @ComponentScan
 @PropertySource("classpath:application.properties")
-@EnableScheduling
 @ImportResource("classpath:context.xml")
+@EnableAspectJAutoProxy
 public class Conf {
 //
 //    @Bean
